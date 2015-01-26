@@ -2,7 +2,7 @@
 import datetime
 from django.utils import timezone
 from django.db import models
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 #django-location-field
 #from geolocation.models import Location
@@ -31,7 +31,7 @@ class Device(models.Model):
     other  = models.TextField(max_length=1000)
    
     slug = models.SlugField(max_length=255)
-    #user = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     create_date = models.DateTimeField(auto_now_add=True)
     online = models.BooleanField(default=True)
     #datastreams  = models.ForeignKey(Datastream)

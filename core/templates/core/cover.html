@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block head_extra %}
+  <link href="{{ STATIC_URL }}css/cover.css" rel="stylesheet" media="screen">
+{% endblock head_extra %}
+
+{% block content %}
+  <div class="content-left">
+    <h1>Perform Systematic Literature Reviews</h1>
+    <p class="slogan">Performing a systematic literature review is a labor-intensive task that requires a huge amount of work from the researcher. <strong>Django IoT Mgmt</strong> will help you planning, conducting and reporting the review.</p>
+  </div>
+  <div class="content-right">
+    <h2>Sign up</h2>
+    <form action="/signup/" method="post" id="new-account">
+      {% csrf_token %}
+      <input type="text" placeholder="Username" name="username">
+      <input type="password" placeholder="Password" name="password">
+      <input type="hidden" name="confirm_password" value="">
+      <input type="text" placeholder="Email" name="email">
+      <button type="submit" class="btn btn-success btn-large" style="width:100%">Create a new account</button>
+    </form>
+  </div>
+  <script type="text/javascript">
+    $(function() {
+      $("#new-account").submit(function () {
+        $("input[name=confirm_password]").val($("input[name=password]").val());
+      });
+    });
+  </script>
+{% endblock content %}
+
+{% block footer %}
+  <section class="features">
+    <div class="wrapper">
+      <article>
+        <h2>Support for geographically distributed researchers</h2>
+        <p>Django IoT Mgmt Backend is a web server for IoT device.</p>
+      </article>
+      <article>
+        <h2>Publish extra information</h2>
+        <p>Normally you can't publish all relevant information about the
+        research as frequently there is a limit amount of pages to publish your
+        article on a certain conference or journal. Django IoT Mgmt Backend provides you a beautiful interface to publish any extra information like the whole result from the search string, all modifications of the search string, more details about the protocol, etc.</p>
+      </article>
+      <article>
+        <h2>Support for tertiary studies</h2>
+        <p>Having a huge amount of Systematic Literature Reviews in the platform, it will provide a powerful support for tertiary studies, that is, systematic literature review of secondary studies.</p>
+      </article>
+    </div>
+  </section>
+{% endblock footer %}

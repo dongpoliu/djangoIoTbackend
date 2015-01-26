@@ -45,6 +45,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'south',
     #added for location 
     #'location_field',
     # new added 3rd apps
@@ -52,8 +54,11 @@ INSTALLED_APPS = (
     #'oauth2_provider',
     'corsheaders',    
     # local apps
-    #'geolocation', 
+    #'activities',
+    'auth',
+    'core',
     'device',
+    'settings',
     #'auth',    
     
 )
@@ -189,7 +194,7 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-DEFAULT_FROM_EMAIL = 'Parsifal <support@parsif.al>'
+DEFAULT_FROM_EMAIL = 'Django IoT Mgmt <rubinliu@hotmail.com>'
 
 FILE_UPLOAD_TEMP_DIR = '/tmp/'
 FILE_UPLOAD_PERMISSIONS = 0644

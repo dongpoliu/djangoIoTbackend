@@ -17,4 +17,4 @@ def device_home(request):
     ctx = {
             'devicess': devices,
         }
-    return render_to_response('device/device_home.html', ctx, context_instance=RequestContext(request))
+    return render_to_response('device/devices.html', ctx, context_instance=RequestContext(request))
