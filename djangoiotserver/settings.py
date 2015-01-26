@@ -46,13 +46,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #added for location 
-    'location_field',
+    #'location_field',
     # new added 3rd apps
     'rest_framework',
-    'oauth2_provider',
+    #'oauth2_provider',
     'corsheaders',    
     # local apps
-    'geolocation', 
+    #'geolocation', 
     'device',
     #'auth',    
     
@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.common.CommonMiddleware',

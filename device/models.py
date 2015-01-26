@@ -2,11 +2,10 @@
 import datetime
 from django.utils import timezone
 from django.db import models
-from django.db.models import Sum
 #from django.contrib.auth.models import User
 
 #django-location-field
-from geolocation.models import Location
+#from geolocation.models import Location
 #enf of django-location-field
 
 
@@ -23,11 +22,11 @@ class Device(models.Model):
     url = models.CharField(max_length=200)
     idsn = models.TextField(max_length=1000)
     ele = models.TextField(max_length=1000)
-    location = models.ForeignKey(Location)
+    #location = models.ForeignKey(Location)
     private = models.BooleanField(default=True)
     route_to = models.TextField(max_length=1000)
     #auth_info = 
-    #interval = IntegerField(default = 0)    
+    interval = models.IntegerField(default = 0)    
     activate_code = models.TextField(max_length=1000)
     other  = models.TextField(max_length=1000)
    
