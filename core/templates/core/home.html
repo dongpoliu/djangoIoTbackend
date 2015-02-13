@@ -1,37 +1,680 @@
-{% extends 'base_app.html' %}
+{% extends 'base.html' %}
 {% load humanize %}
 {% load i18n %}
+{% load thumbs %}
+{% load staticfiles %}
 
-{% block head_extra %}
-  <link href="{{ STATIC_URL }}css/home.css" rel="stylesheet" media="screen">
-{% endblock head_extra %}
+{% block extracss  %} 
+        <link href="{% static 'css/shieldui-all.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/all.min.css' %}" rel="stylesheet">
+<style>
+    .section {
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        background-color: #111111;
+        color: #ccc;
+        border-top: solid 3px #1E97E3;
+        height: 50px;
+    }
+
+    .menuitem {
+        margin-top: 12px;
+        display: inline-block;
+        width: 100px;
+    }
+
+    .menulink {
+        height: 40px;
+        padding: 7px;
+        border-bottom: 3px solid transparent;
+    }
+
+        .menulink:hover {
+            border-bottom: 3px solid #1E97E3;
+            text-decoration: none;
+            color: #1E97E3;
+        }
+
+    .footer {
+        margin-top: 12px;
+    }
+
+    .liitem {
+        height: 45px;
+    }
+
+    .skillLine {
+        display: inline-block;
+        width: 100%;
+        min-height: 90px;
+        padding: 3px 4px;
+    }
+
+    skillLineDefault {
+        padding: 3px 4px;
+    }
+
+    div.skill {
+        background: #F58723;
+        border-radius: 3px;
+        color: white;
+        font-weight: bold;
+        padding: 3px 4px;
+        width: 70px;
+    }
+
+    .rating {
+        margin-left: 30px;
+    }
+
+    .footerQR {
+        margin-left: 30%;
+    }
+
+    .leftText {
+        font-size: 41px;
+    }
+
+    .rightText {
+        font-size: 41px;
+        background: #F58723;
+        border-radius: 3px;
+        color: white;
+        padding: 3px 4px;
+    }
+</style>
+{% endblock extracss %}
 
 {% block content %}
-  <div class="clearfix">
-    <div class="last-updates">
-      <h1>Last updates</h1>
-      <ul>
-        {% for feed in feeds %}
-          <li>{{ feed.message|safe }} <small>{{ feed.date|naturaltime }}</small></li>
-        {% empty %}
-          <li>There is no recent update on your network.</li>
-        {% endfor %}
-      </ul>
+    <div class="row">
+           <div class="col-lg-12">
+               <h1 class="page-header"><span class="glyphicon glyphicon-dashboard"></span>{% trans ' 仪表盘' %}
+               </h1>
+           </div>
     </div>
-    <div class="user-reviews">
-      <div class="clearfix" style="margin-bottom: 1.5em">
-        <a href="/reviews/new/" class="btn btn-success pull-right">New review</a>
-      </div>
-      <div class="container reviews" style="padding: 0">
-        <nav>
-          <h3>Your Reviews</h3>
-          {% for review in user_reviews %}
-            <a href="/{{ review.author.username }}/{{ review.name }}/">{{ review.title }}</a>
-          {% empty %}
-            <p>You don't have any systematic literature review yet.</p>
-          {% endfor %}
-        </nav>
-      </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-comments fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ device_counts }}</div>
+                            <div>{% trans '设备' %}</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left"><a href="/device/list"> {% trans '详情' %}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tasks fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">12</div>
+                            <div>{% trans '提醒' %}</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">{% trans '详情' %}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-shopping-cart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{marker_counts }}</div>
+                            <div>{% trans '关注' %}</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">{% trans '详情' %}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-support fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">13</div>
+                            <div>{% trans '动作' %}</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">{% trans '详情' %}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-sm-6 col-lg-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="text-center">User Profile<span class="glyphicon glyphicon-user pull-right"></span></h4>
+                </div>
+                <div class="panel-body text-center">
+                    <p class="lead">
+                        <strong>Mike Smith</strong>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item liitem"><strong>Position:</strong>
+                        <span class="pull-right">Developer</span>
+                    </li>
+                    <li class="list-group-item liitem"><strong>Company:</strong>
+                        <span class="pull-right">EasyTech</span>
+                    </li>
+                    <li class="list-group-item liitem"><strong>Department:</strong>
+                        <span class="pull-right">Dataviz</span>
+                    </li>
+                    <li class="list-group-item liitem"><strong>Project Duration:</strong>
+                        <span class="pull-right">12 months</span>
+                    </li>
+                </ul>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-3 col-md-4 col-lg-2"></div>
+                        <div class="col-xs-2 col-sm-4 col-md-4 col-lg-4" id="qr1"></div>
+                        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="text-center">Skills<span class="glyphicon glyphicon-saved pull-right"></span></h4>
+                </div>
+                <div class="panel-body text-center">
+                    <p class="lead">
+                        <strong>Technology Overview</strong>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item liitem">
+                        <div class="skillLineDefault">
+                            <div class="skill pull-left text-center">HTML5</div>
+                            <div class="rating" id="rate1"></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item liitem">
+                        <div class="skillLineDefault">
+                            <div class="skill pull-left text-center">CSS</div>
+                            <div class="rating" id="rate2"></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item liitem">
+                        <div class="skillLineDefault">
+                            <div class="skill pull-left text-center">jQuery</div>
+                            <div class="rating" id="rate3"></div>
+                        </div>
+                    </li>
+                    <li class="list-group-item liitem">
+                        <div class="skillLineDefault">
+                            <div class="skill pull-left text-center">C#</div>
+                            <div class="rating" id="rate4"></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-3 col-md-4 col-lg-2"></div>
+                        <div class="col-xs-2 col-sm-4 col-md-4 col-lg-4" id="qr2"></div>
+                        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <div class="panel panel-primary" style="height: 491px;">
+                <div class="panel-heading">
+                    <h4 class="text-center">Quarterly Performance<span class="glyphicon glyphicon-screenshot pull-right"></span></h4>
+                </div>
+                <div id="chart1">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+            <div class="panel panel-primary" style="height: 370px; min-width: 220px;">
+                <div class="panel-heading">
+                    <h4 class="text-center">Overall Performance<span class="glyphicon glyphicon-search pull-right"></span></h4>
+                </div>
+                <div class="panel-body text-center">
+                    <p class="lead">
+                        <strong>Very Good</strong>
+                    </p>
+                </div>
+                <div>
+                    <div class="row" style="margin: 10px;">
+                        <div class="col-xs-2 col-sm-5 col-md-5 col-lg-1"></div>
+                        <div style="width: 190px; height: 190px;" id="progress1"></div>
+                        <div class="col-xs-2 col-sm-5 col-md-3 col-lg-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="text-center">Company Performance<span class="glyphicon glyphicon-ok pull-right"></span></h4>
+                </div>
+                <div class="row" style="margin: 0 10px 0 10px;">
+                    <div class="row" style="margin: 10px;">
+                        <div class="col-sm-3 col-md-2 col-lg-2">
+                            <span class="leftText">Budget</span>
+                        </div>
+                        <div class="col-sm-7 col-md-8 col-lg-8" style="height: 90px;" id="sparkline1"></div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            <span class="rightText" style="margin-top: 23px;">223K</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin: 0 10px 0 10px;">
+                        <div class="col-sm-3 col-md-2 col-lg-2">
+                            <span class="leftText">Visits</span>
+                        </div>
+                        <div class="col-sm-7 col-md-8 col-lg-8" style="height: 90px;" id="sparkline2"></div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            <span class="rightText" style="margin-top: 23px;">790K</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin: 0 10px 0 10px;">
+                        <div class="col-sm-3 col-md-2 col-lg-2">
+                            <span class="leftText">Profit</span>
+                        </div>
+                        <div class="col-sm-7 col-md-8 col-lg-8" style="height: 90px;" id="sparkline3"></div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            <span class="rightText" style="margin-top: 23px;">574K</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="text-center">Full Company Data<span class="glyphicon glyphicon-eye-open pull-right"></span></h4>
+                </div>
+                <div id="grid1"></div>
+            </div>
+        </div>
+    </div>
+
 {% endblock content %}
+
+{% block extra_js %}
+        <script src="{% static 'js/shieldui-all.min.js' %}"></script>
+        <script src="{% static 'js/gridData.js' %}"></script>
+<script type="text/javascript">
+    jQuery(function ($) {
+        // a function to generate some random data
+        function getRandomArray(length, min, max) {
+            var array = [];
+            for (var i = 0; i < length; i++) {
+                array.push(Math.floor(Math.random() * (max - min + 1)) + min);
+            }
+            return array;
+        }
+
+        // initialize the ratings
+        $('#rate1').shieldRating({
+            max: 7,
+            step: 0.1,
+            value: 6.3,
+            markPreset: false
+        });
+        $('#rate2').shieldRating({
+            max: 7,
+            step: 0.1,
+            value: 6,
+            markPreset: false
+        });
+        $('#rate3').shieldRating({
+            max: 7,
+            step: 0.1,
+            value: 4.5,
+            markPreset: false
+        });
+        $('#rate4').shieldRating({
+            max: 7,
+            step: 0.1,
+            value: 5,
+            markPreset: false
+        });
+
+        // initialize the QR codes
+        $("#qr1").shieldQRcode({
+            mode: "byte",
+            size: 150,
+            value: "Mike Smith",
+            style: {
+                color: "#1E97E3"
+            }
+        });
+        $("#qr2").shieldQRcode({
+            mode: "byte",
+            size: 150,
+            value: "Avarage: 6.3",
+            style: {
+                color: "#1E97E3"
+            }
+        });
+
+        // init the main chart
+        $("#chart1").shieldChart({
+            theme: "light",
+            exportOptions: {
+                image: false,
+                print: false
+            },
+            primaryHeader: {
+                text: "Performance Data"
+            },
+            tooltipSettings: {
+                axisMarkers: {
+                    enabled: true,
+                    mode: 'x',
+                    width: 2,
+                    zIndex: 3,
+                    drawColor: "white"
+                }
+            },
+            dataSeries: [
+                {
+                    seriesType: 'bar',
+                    collectionAlias: 'Achieved',
+                    data: getRandomArray(20, 1, 50)
+                },
+                {
+                    seriesType: 'line',
+                    collectionAlias: 'Target',
+                    data: getRandomArray(20, 20, 70)
+                }
+            ]
+        });
+
+        // init the grid
+        $("#grid1").shieldGrid({
+            dataSource: {
+                data: gridData
+            },
+            sorting: {
+                multiple: false
+            },
+            paging: {
+                pageSize: 8,
+                pageLinksCount: 10
+            },
+            selection: {
+                type: "row",
+                multiple: true,
+                toggle: false
+            },
+            columns: [
+                { field: "id", title: "ID" },
+                { field: "name", title: "Person Name" },
+                { field: "company", title: "Company Name" },
+                { field: "email", title: "Email Address" }
+            ]
+        });
+
+        // initialize the circular progress bar
+        $("#progress1").shieldProgressBar({
+            min: 0,
+            max: 100,
+            value: 87,
+            layout: "circular",
+            layoutOptions: {
+                circular: {
+                    borderColor: "#FF7900",
+                    width: 17,
+                    borderWidth: 3,
+                    color: "#1E98E4",
+                    backgroundColor: "transparent"
+                }
+            },
+            text: {
+                enabled: true,
+                template: '<span style="font-size:52px;color:#1E98E4;">{0:n0}%</span>'
+            }
+        });
+
+        // init the three sparkline charts
+        $("#sparkline1").shieldChart({
+            theme: "light",
+            exportOptions: {
+                image: false,
+                print: false
+            },
+            tooltipSettings: {
+                chartBound: true,
+                axisMarkers: {
+                    enabled: true,
+                    mode: 'x'
+                },
+                customHeaderText: '',
+                customPointText: function (point, chart) {
+                    return shield.format(
+                        '<span><b>{value}</b></span>',
+                        {
+                            value: point.y
+                        }
+                    );
+                },
+            },
+            chartAreaPaddingTop: -7,
+            chartLegend: {
+                enabled: false
+            },
+            seriesSettings: {
+                line: {
+                    activeSettings: {
+                        pointHoveredState: {
+                            enabled: false
+                        }
+                    },
+                    pointMark: {
+                        enabled: false
+                    }
+                }
+            },
+            axisX: {
+                axisTickText: {
+                    enabled: false
+                },
+                plotStripWidth: 0,
+                drawWidth: 0,
+                ticksWidth: 0,
+                ticksHeight: 0
+            },
+            axisY: {
+                axisTickText: {
+                    enabled: false
+                },
+                plotStripWidth: 0,
+                drawWidth: 0,
+                ticksWidth: 0
+            },
+            dataSeries: [{
+                seriesType: "line",
+                data: getRandomArray(70, 1, 100)
+            }]
+        });
+
+        $("#sparkline2").shieldChart({
+            theme: "light",
+            exportOptions: {
+                image: false,
+                print: false
+            },
+            tooltipSettings: {
+                chartBound: true,
+                axisMarkers: {
+                    enabled: true,
+                    mode: 'x'
+                },
+                customHeaderText: '',
+                customPointText: function (point, chart) {
+                    return shield.format(
+                        '<span><b>{value}</b></span>',
+                        {
+                            value: point.y
+                        }
+                    );
+                },
+            },
+            chartAreaPaddingTop: -7,
+            chartLegend: {
+                enabled: false
+            },
+            seriesSettings: {
+                bar: {
+                    activeSettings: {
+                        pointHoveredState: {
+                            enabled: false
+                        }
+                    },
+                    pointMark: {
+                        enabled: false
+                    }
+                }
+            },
+            axisX: {
+                axisTickText: {
+                    enabled: false
+                },
+                plotStripWidth: 0,
+                drawWidth: 0,
+                ticksWidth: 0,
+                ticksHeight: 0
+            },
+            axisY: {
+                axisTickText: {
+                    enabled: false
+                },
+                plotStripWidth: 0,
+                drawWidth: 0,
+                ticksWidth: 0
+            },
+            dataSeries: [{
+                seriesType: "bar",
+                data: getRandomArray(70, 1, 100)
+            }]
+        });
+
+        $("#sparkline3").shieldChart({
+            theme: "light",
+            exportOptions: {
+                image: false,
+                print: false
+            },
+            tooltipSettings: {
+                chartBound: true,
+                axisMarkers: {
+                    enabled: true,
+                    mode: 'x'
+                },
+                customHeaderText: '',
+                customPointText: function (point, chart) {
+                    return shield.format(
+                        '<span><b>{value}</b></span>',
+                        {
+                            value: point.y
+                        }
+                    );
+                },
+            },
+            chartAreaPaddingTop: -7,
+            chartLegend: {
+                enabled: false
+            },
+            seriesSettings: {
+                area: {
+                    activeSettings: {
+                        pointHoveredState: {
+                            enabled: false
+                        }
+                    },
+                    pointMark: {
+                        enabled: false
+                    }
+                }
+            },
+            axisX: {
+                axisTickText: {
+                    enabled: false
+                },
+                plotStripWidth: 0,
+                drawWidth: 0,
+                ticksWidth: 0,
+                ticksHeight: 0
+            },
+            axisY: {
+                axisTickText: {
+                    enabled: false
+                },
+                plotStripWidth: 0,
+                drawWidth: 0,
+                ticksWidth: 0
+            },
+            dataSeries: [{
+                seriesType: "area",
+                data: getRandomArray(70, 1, 100)
+            }]
+        });
+    });
+</script>
+{% endblock extra_js%}
+
+
+
+
+
+
+
+
+
+
+

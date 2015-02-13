@@ -1,77 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}Django IoT Mgmt{% endblock %}</title>
-  <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/favico.png">
-  <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" media="screen">
-  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"></script>
-  {% block head_extra %}
-  {% endblock head_extra %}
-</head>
-{% load i18n %}
-<body>
-  <div class="page-wrapper">
-    <header>
-      <div class="wrapper clearfix">
-        <h1><a href="/">Django IoT Mgmt</a></h1>
-        <nav>
-          <!--a href="/explore/">Explore</a-->
-          <a href="{% url 'dashboard' %}">{% trans 'Bashboard' %}</a> 
-          <a href="{% url 'map' %}">{% trans 'Map' %}</a> 
-          <a href="{% url 'data' %}">{% trans 'Data' %}</a> 
-          <a href="{% url 'about' %}">{% trans 'About' %}</a> 
-          <a href="{% url 'support' %}">{% trans 'Support' %}</a> 
+{% extends 'bare_base.html' %}
+{% load staticfiles %}
+{% load i18n %}   
+{% load compress %}
+
+{% block body %}
+         <!-- Navigation -->  
+         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                {% include "snippets/navbar.html" %}      
+                {% include "snippets/sidebar.html" %}        
         </nav>
-        {% if user.is_authenticated %}
-          <nav class="signedin">
-            <a href="/{{ user.username }}/" class="user">{{ user.username }}</a>
-            <a href="/settings/">Account Settings</a>
-            <a href="/signout/">Sign Out</a>
-          </nav>
-        {% else %}
-          <div class="signin">
-            <a href="/signup/" class="btn btn-success" style="text-decoration: none">Sign up</a>
-            <a href="/signin/" class="btn" style="text-decoration: none">Log in</a>
-          </div>
-        {% endif %}
-      </div>
-    </header>
-    <section class="content">
-      <div class="wrapper clearfix">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-              <a href="#" class="pull-right" onclick="$(this).closest('div').fadeOut(); return false;">×</a>
-              {{ message }}
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                {% block content %}    
+
+                {% endblock %}
             </div>
-          {% endfor %}
-        {% endif %}
-        {% block content %}
-        {% endblock content %}
-      </div>
-    </section>
-    {% block footer %}
-    {% endblock footer %}
-    <div class="push"></div>
-  </div>
-  <footer>
-    <div class="wrapper clearfix">
-      <p>© 2015 DongpoLiu.</p>
-      <ul>
-        <li><a href="#">Terms of Use</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Cookie Policy</a></li>
-      </ul>
-    </div>
-  </footer>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-42049022-2', 'parsif.al');
-    ga('send', 'pageview');
-  </script>
-</body>
-</html>
+        </div>   
+	
+	<!-- Modal -->
+	<div class="modal fade" id="modal-caso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->        
+	
+        {% include "snippets/footer.html" %}
+{% endblock body %}

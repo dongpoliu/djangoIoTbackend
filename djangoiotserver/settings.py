@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 #new added part
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 from unipath import Path
-import dj_database_url
+
 from decouple import config
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 PROJECT_DIR = Path(__file__).parent.parent
@@ -21,6 +21,8 @@ PROJECT_DIR = Path(__file__).parent.parent
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# Set paths -- new added
+fillPath = lambda x: os.path.join(os.path.dirname(__file__), x)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -37,48 +39,39 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.sessions',    
+    'django.contrib.sites',
+    'django.contrib.admindocs',    
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'south',
     #added for location 
-    #'location_field',
-    # new added 3rd apps
-    'rest_framework',
-    #'oauth2_provider',
-    'corsheaders',    
+    'geoposition',
+    'compressor',
     # local apps
-    #'activities',
-    'auth',
     'core',
-    'device',
+    'devices',
     'settings',
-    #'auth',    
-    
+    'userauth',    
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = (  
     'django.contrib.sessions.middleware.SessionMiddleware',     
     'django.middleware.locale.LocaleMiddleware',  # new added     
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    #'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',  # new added   
     'django.middleware.gzip.GZipMiddleware',# new added
     'django.middleware.cache.CacheMiddleware',# new added
+    'django.middleware.transaction.TransactionMiddleware',# new added
     'django.middleware.cache.FetchFromCacheMiddleware', # new added
     'django.middleware.cache.UpdateCacheMiddleware',# new added  
-    'corsheaders.middleware.CorsMiddleware',# new added 
 )
 
 ROOT_URLCONF = 'djangoiotserver.urls'
@@ -90,21 +83,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        # new added
         'ATOMIC_REQUESTS': True
     }
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
-#Updated
-#LANGUAGE_CODE = 'en-us'
-#TIME_ZONE = 'UTC'
-#USE_I18N = True
-#USE_L10N = True
-#USE_TZ = True
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
 USE_I18N  = True
 USE_L10N  = True
 USE_TZ    = True
@@ -130,20 +114,21 @@ LANGUAGES = (
 #    ('ko', u'한국어'),
 )
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
 STATIC_URL = '/static/'
 
 
 #new added part
-LOGIN_REDIRECT_URL = '/pdfdocument/'
+LOGIN_REDIRECT_URL = '/devices/'
 PROJECT_ROOT = BASE_DIR
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '')
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_URL = '/media/'
 
 FIXTURE_DIRS  = (
     os.path.join(BASE_DIR, 'fixtures'),
@@ -268,3 +253,33 @@ LOGGING = {
 
 #Allow CORS requests from all domains (oauth2)
 CORS_ORIGIN_ALLOW_ALL = True
+
+SITEMESSAGES_SETTINGS = {
+    'twitter': [],
+    'smtp': []
+}
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'compressor.finders.CompressorFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
+GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
+
+# some johnny settings
+#CACHES = {
+#  'default' : dict(
+#        BACKEND = 'johnny.backends.memcached.MemcachedCache',
+#      LOCATION = ['127.0.0.1:11211'],
+#        JOHNNY_CACHE = True,
+#   )
+#}
+#JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_myproj'
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+CACHE_BACKEND = 'db://django_db'
+
+ 
