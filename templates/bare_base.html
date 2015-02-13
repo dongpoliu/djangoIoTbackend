@@ -1,0 +1,22 @@
+{% load staticfiles %}
+{% load i18n %}   
+{% load compress %}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+            {% include "snippets/header.html" %}      
+            {% block extracss %}{% endblock %}
+            {% block extrahead %}{% endblock %}
+    </head>
+    <body> 
+        <div id="wrapper">
+            {% block body %}
+            {% endblock body %}
+            {% block js %}
+            {% endblock js %}
+            {% block extra_js %}
+            {% endblock extra_js%}
+        </div>
+     </body>      
+</html>

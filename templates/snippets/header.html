@@ -1,0 +1,29 @@
+{% load compress %}
+{% load staticfiles %}
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.1">
+<meta name="description" content="">
+<meta name="author" content="刘东坡 ">
+<title>{% block title %}我的物联| {{ site_name }}{% endblock %}</title>
+<!-- CSS -->
+{% compress css %}
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'bootstrap/css/bootstrap-theme.css' %}" rel="stylesheet">
+        <link href="{% static 'bootstrap/css/sticky-footer-navbar.css' %}" rel="stylesheet">
+        <link href="{% static 'datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+        <link href="{% static 'startbootstrap-sb-admin/css/sb-admin.css' %}" rel="stylesheet">        
+        <link href="{% static 'startbootstrap-sb-admin/css/plugins/morris.css' %}" rel="stylesheet">    
+        <link href="{% static 'startbootstrap-sb-admin/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">        
+{% endcompress %}
+
+<!-- Add custom CSS here -->
+{% block customcss %}
+    <style>
+        body {padding-bottom: 40px;}
+    </style>
+{% endblock %}
+
+<!-- RSS Feed -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site_name }}" href="{#% url 'rss_feed' %#}" />

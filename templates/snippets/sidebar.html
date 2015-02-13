@@ -1,0 +1,57 @@
+{% load i18n %}   
+ 
+<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        <li>
+            <a href="{% url 'map' %}"><i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;{% trans  '地图'%}</a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-fw fa-table"></i>{% trans  '统计信息'%}</a>
+        </li>                            
+        <li>
+                <a href="#"><i class="fa fa-fw fa-edit"></i>{% trans  ' 设备类型'%}</a>
+        </li>         
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-arrows-v"></i>{% trans  '健康医疗'%}<i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="demo1" class="collapse">
+                <li>
+                    <a href="#">{% trans  '血压计'%}</a>
+                </li>
+             </ul>              
+        </li>
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="fa fa-fw fa-arrows-v"></i>{% trans  '智能家电'%}<i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="demo2" class="collapse">
+                <li>
+                    <a href="#">{% trans  '空调'%}</a>
+                </li>
+                <li>
+                    <a href="#">{% trans  '冰箱'%}</a>
+                </li>
+                <li>
+                    <a href="#">{% trans  '开关'%}</a>
+                </li> 
+             </ul>   
+        </li>
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#demo3"><i class="fa fa-fw fa-arrows-v"></i>{% trans  '环境治理'%}<i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="demo3" class="collapse">
+                <li>
+                    <a href="#">{% trans  '室内空气'%}</a>
+                </li>
+                <li>
+                    <a href="#">{% trans  '温湿度'%}</a>
+                </li>
+                <li>
+                    <a href="#">{% trans  '水质量'%}</a>
+                </li>  
+            </ul>
+        </li>
+    </ul>
+    <div class="widget">
+        <div class="datepicker"></div>
+    </div>
+</div>
+<!-- /.navbar-collapse -->
+ 

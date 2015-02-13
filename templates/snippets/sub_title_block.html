@@ -1,0 +1,27 @@
+{% load sitetree model_meta %}
+
+{% sitetree_breadcrumbs from "main" template "sitetree/breadcrumbs_bootstrap3.html" %}
+
+<span class="pull-right">
+{% if realm.syndication_enabled %}
+    <a title="Подписаться на RSS раздела {% model_meta_verbose_name_plural realm.model %}" href="{{ realm.get_syndication_url }}">
+        <i class="fi-rss"></i>&nbsp;RSS
+    </a> &nbsp;
+{% endif %}
+
+{% if realm.yawidget_code %}
+    <a title="Добавить виджет раздела {% model_meta_verbose_name_plural realm.model %} на главную Яндекса" target="_blank" href="http://www.yandex.ru?add={{ realm.yawidget_code }}&from=promocode">
+        <i class="fi-projection-screen"></i>&nbsp;Яндекс.Виджет
+    </a> &nbsp;
+{% endif %}
+</span>
+
+<div class="page-header">
+    <span class="icon_entity glyphicon glyphicon-{{ realm.icon }}"></span>
+    <h1>{% sitetree_page_title from "main" %}</h1>
+    <i>{% block subheader %}{{ subheader }}{% endblock %}</i>
+</div>
+
+{% if view.name == 'listing' %}
+    <blockquote>{{ realm.txt_promo|safe }}</blockquote>
+{% endif %}

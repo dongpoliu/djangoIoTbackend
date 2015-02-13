@@ -1,0 +1,51 @@
+.features{margin-top:40px}
+.features .features_row{padding-top:10px}
+.features .features_row div{min-height:250px;max-height:250px}
+.features p{color:#888;font-size:12px}
+.features i{color:#fafafa;font-size:80px}
+.features i:hover{color:#3776ab}
+.features .box{padding-top:15px;border:1px solid #fff}
+.features .box:hover{border:1px solid #ccc}
+.cover_img .icon_entity{padding:20px;color:#bbb;min-width:100px}
+.cover_img a{text-align:center}.faded{opacity:.1}.faded:hover{opacity:1}
+.listing_item{padding:10px;min-width:350px;max-width:350px;min-height:150px;max-height:150px;float:left;margin-right:20px;margin-top:20px;border-right:1px solid #eee}
+.listing_item img{margin-right:20px;float:left}
+.listing_item sup{color:#888}
+.listing_item .rating{position:absolute;margin-left:10px}
+.listing_item .description{overflow:hidden}
+.listing_item .description .small{margin-top:10px;font-size:10px}
+.category-box p { color: #999999; }
+.category-box li { margin-bottom: 13px; }
+.category {
+    height: 200px;
+    border: 1px #aaa;
+    margin-top: 30px;
+    margin-left: 0 !important;
+    margin-right: 20px;
+    border: 1px solid rgb(153, 153, 153);
+    border-top: 0;
+    max-width: 280px;
+    overflow: hidden;
+}
+.category a {
+    text-decoration: none;
+}
+.category img {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+}
+.category-image {
+    height: 169px;
+}
+.category-name {
+    min-height: 24px;
+    background-color: rgb(81, 163, 81);
+    background-image: linear-gradient(to bottom, rgb(98, 196, 98), rgb(81, 163, 81));
+    background: url('../img/topic.png');
+    padding: 3px 5px;
+    color: white;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    line-height: 20px;
+}
