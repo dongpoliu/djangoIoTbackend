@@ -82,21 +82,27 @@
         </div>
     </div>
 </div>
-
+ {% endfor %}
+ 
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
     <div class="row padbig">  
         <div id="map" class="map"></div>       
     </div>
 </div>
- {% endfor %}
+
 {% endblock content %}
 
 {% block extra_js %}
-	<script type="text/javascript"  src="http://webapi.amap.com/maps?v=1.3&key=a23b5e94cecc8e98acd039aba6cd064c"></script>	
+	<script type="text/javascript"  src="http://webapi.amap.com/maps?v=1.3&key=a23b5e94cecc8e98acd039aba6cd064c"></script>
+	<script src="{% static 'js/map.js' %}"></script>
+	<script src="{% static 'js/filters.js' %}"></script>
 	<script type="text/javascript">
-      var lat_lon  = {{ device.coordinates | js  }};  
+      //var lat_lon  = {{ device.coordinates | js  }};  
 	function init_map(lat,lon) {
-
+        var lat_float = parseFloat(lat);
+	  alert(lat_float);
+        var lon_float = parseFloat(lon);
+	  alert(lon_float);
 	    var imageLayer = new AMap.ImageLayer({
 	    url:'http://developer.amap.com/wp-content/uploads/2014/06/dongwuyuan.jpg',
 		    bounds: new AMap.Bounds( //经纬度边界
@@ -118,7 +124,7 @@
 		   //2D地图显示视口
 		   view: new AMap.View2D({
 			   //center: new AMap.LngLat(116.342659, 39.946275),
-			  center: new AMap.LngLat(lat,lon),
+			   center: new AMap.LngLat(lat_float,lon_float),
 			   zoom:15
 		   })
 	      });  
