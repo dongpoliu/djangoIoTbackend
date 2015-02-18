@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+
+{% load crispy_forms_tags %}
+
 {% block content %}
-  <h1>Help</h1>
-{% endblock content %}
+<br>
+<br>
+   <h3><span class="glyphicon glyphicon-question-sign"></span> Help</h3>
+    {% crispy form %}
+{% endblock %}

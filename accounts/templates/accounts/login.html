@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load i18n %}  
+{% load staticfiles %}
+
+{% block extracss %}
+<link href="{% static 'bootstrap/css/signin.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block rootcontainer %}
+<div class="container">
+  <form class="form-signin" name="loginform" action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {% if next %}
+      <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
+    <h2 class="form-signin-heading">{% trans  '请登录'%}</h2>
+    <input type="text" id="username" name="username"  class="form-control" placeholder={% trans  '用户名'%}  required autofocus>
+    <input type="password" id="password" name="password" class="form-control"  placeholder={% trans  '密码'%}  required>
+    {% if login_failed %}
+      <p class="text-danger">{% trans  '对不起，该登录无效。请重试'%}</p>
+    {% endif %}
+    <input type="submit" name="submit" value={% trans  '登录'%} class="btn btn-lg btn-primary btn-block"/>
+    <br>
+    <p class="text-right">
+        <a href="{% url 'password_reset' %}">{% trans  '忘记密码?'%}</a>
+    </p>
+  </form>
+</div>
+{% endblock %}
