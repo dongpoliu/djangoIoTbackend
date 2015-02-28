@@ -31,15 +31,14 @@ fillPath = lambda x: os.path.join(os.path.dirname(__file__), x)
 #SECRET_KEY = 'n)o(80l_#4^fdfee=w)lgc7$_+t5qgsxu%@rf5nm3msh5!9!+f'
 SECRET_KEY = 'SECRET_KEYSECRET_KEYSECRET_KEYSECRET_KEYSECRET_KEY'
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
-
 # Application definition
 INSTALLED_APPS = (
+    #'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,13 +49,21 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     #added for location 
+    #'mptt',
+    'rest_framework',
     'geoposition',
+    'axes',
+    'crispy_forms',
     'compressor',
+    'chineseaddress',
+    'taggit',
     # local apps
     'core',
-    'devices',
+    #'devices',
+    'air',
+    'subscribers',
     'settings',
-    'userauth',    
+    'accounts',    
 )
 
 MIDDLEWARE_CLASSES = (  
@@ -94,6 +101,7 @@ USE_L10N  = True
 USE_TZ    = True
 TIME_ZONE = 'Asia/Shanghai'
 LANGUAGE_CODE = 'zh-CN'
+#LANGUAGE_CODE = 'en-us'
 DEFAULT_CHARSET = 'UTF-8'
 SITE_ID   = 1
 LOCALE_PATHS  = (
@@ -118,9 +126,8 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_URL = '/static/'
 
-
 #new added part
-LOGIN_REDIRECT_URL = '/devices/'
+LOGIN_REDIRECT_URL = '/dashbooard/'
 PROJECT_ROOT = BASE_DIR
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '')
 STATICFILES_DIRS = (
@@ -146,7 +153,6 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
 
-
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
@@ -157,7 +163,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.csrf',
 )
-
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
@@ -171,8 +176,8 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 #        'guardian.backends.ObjectPermissionBackend',
 #)
 
-LOGIN_URL = '/signin/'
-LOGOUT_URL = '/signout/'
+LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
 
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
@@ -185,14 +190,14 @@ FILE_UPLOAD_TEMP_DIR = '/tmp/'
 FILE_UPLOAD_PERMISSIONS = 0644
 
 HTTPS_SUPPORT = config('HTTPS_SUPPORT', default=True, cast=bool)
-SECURE_REQUIRED_PATHS = (
-    '/',
-    '/admin/',
-    '/signin/',
-    '/signup/',
-    '/reset/',
-    '/settings/password/',
-)
+#SECURE_REQUIRED_PATHS = (
+#   '/',
+#    '/admin/',
+#    '/login/',
+#    '/logout/',
+#    '/reset/',
+#   '/settings/password/',
+#)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticatedOrReadOnly',),
@@ -202,7 +207,17 @@ REST_FRAMEWORK = {
 
 # apps configuration required for Django
 INSTALLED_APPS += (
+    'debug_toolbar',
 )
+
+MIDDLEWARE_CLASSES += \
+    ('debug_toolbar.middleware.DebugToolbarMiddleware', )
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'SHOW_TEMPLATE_CONTEXT': True,
+    'HIDE_DJANGO_SQL': False,
+}
 
 # DOMAIN will be used in link generation specially in emails
 DOMAIN = '127.0.0.1:8000'
@@ -282,4 +297,15 @@ GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
 CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 CACHE_BACKEND = 'db://django_db'
 
- 
+# Django-crispy-forms settings
+CRISPY_TEMPLATE_PACK = 'bootstrap3' 
+
+#SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+#SESSION_COOKIE_AGE = 5 * 60 #
+SITE_DOMAIN = 'www.myiot.com'
+
+CONTACTS = {
+    'support_email': 'rubinliu@hotmail.com',
+    'admin_email': 'rubinliu@hotmail.com',
+    'info_email': 'rubinliu@hotmail.com',
+}
