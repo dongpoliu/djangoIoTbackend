@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block extracss %}
+<link href="{% static 'datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<br>
+<br>
+<h3>
+    <span class="fa fa-envelope"></span> {% trans  'Email报告'%}
+    <small>
+        <a href="{% url 'airdetectordata_filter' %}">{% trans  '数据筛选'%}</a>
+        | <a href="{% url 'airdetectordata_charts' %}">{% trans  '数据图表'%}</a>
+    </small>
+</h3>
+<div class="container">
+   {% crispy form %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+$(function () {
+    $('#id_start_date').datetimepicker({
+        pickTime: false
+    });
+
+    $('#id_end_date').datetimepicker({
+        pickTime: false
+    });
+});
+</script>
+{% endblock %}

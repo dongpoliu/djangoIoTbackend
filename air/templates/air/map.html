@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load i18n %}
+{% load staticfiles %}
+{#% load js from devices %#}
+
+{% block extracss %}
+    <style>
+    .gmnoprint img {
+        max-width: none;
+    }
+
+    .panel:hover {
+        background-color: rgb(237, 245, 252);
+    }
+
+    .map {
+        min-width: 800px;
+        min-height: 800px;
+        width: 100%;
+        height: 100%;
+    }
+
+    img {
+        max-width: 110%;
+        height: auto;
+    }
+
+    .clearfix {
+        clear: both;
+    }
+
+    .rowcolor {
+        background-color: #CCCCCC;
+    }
+
+    .padall {
+        padding: 10px;
+    }
+
+    .padbig {
+        padding: 20px;
+    }
+
+    .icon {
+        font-size: 23px;
+        color: #197BB5;
+    }
+    </style>
+{% endblock extracss %}
+
+{% block content %}
+<div class="page-header">         
+    <br>
+    <h3><span class="glyphicon glyphicon-map-marker"></span> {% trans  '设备地图'%}</h3>
+</div>
+<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 ">    
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+	{% for airdetector in airdetectors %}  
+            <div class="panel panel-default"  onclick="init_map( {{ airdetector.address }}, {{airdetector.name }} );return false;">
+                <div class="row padall">                
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <span></span>                                                           
+                        <img src="{{ airdetector.thumbnail.url }}">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <span class="fa fa-dollar icon">{{airdetector.date_created}}</span>
+                            </div>
+                            <div class="pull-right">
+                                {{airdetector.last_updated  }} 
+                            </div>
+                        </div>
+                        <div>
+                            <h4><span class="fa fa-map-marker icon"></span>{{ airdetector.associated }}</h4>
+                            <span class="fa fa-lock icon pull-right">{{  airdetector.owner  }}</span>
+                        </div>                 
+                    </div>
+                </div>
+            </div>
+	     {% endfor %}
+        </div>
+    </div>
+</div>
+
+ 
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row padbig">  
+        <div id="map" class="map"></div>       
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+	<script type="text/javascript"  src="http://webapi.amap.com/maps?v=1.3&key=a23b5e94cecc8e98acd039aba6cd064c"></script>	
+	<script type="text/javascript">
+ 
+	function init_map(lat,lon) {
+        var lat_float = parseFloat(lat);
+	 //alert(lat_float);
+        var lon_float = parseFloat(lon);
+	 //alert(lon_float);
+	    var imageLayer = new AMap.ImageLayer({
+	    url:'http://developer.amap.com/wp-content/uploads/2014/06/dongwuyuan.jpg',
+		    bounds: new AMap.Bounds( //经纬度边界
+			    new AMap.LngLat(116.327911, 39.939229),
+			    new AMap.LngLat(116.342659, 39.946275)),
+		    //可见zoom范围
+		    zooms: [15, 18] 
+	  });
+	    var map = new AMap.Map('map',{
+			   resizeEnable: true,
+			   //可通过鼠标滚轮缩放地图
+		   scrollWheel: true,
+		   //可以双击鼠标放大地图
+		   doubleClickZoom: true, 
+		   layers: [
+			   new AMap.TileLayer(),
+			   imageLayer
+		   ],
+		   //2D地图显示视口
+		   view: new AMap.View2D({
+			   //center: new AMap.LngLat(116.342659, 39.946275),
+			   center: new AMap.LngLat(lat_float,lon_float),
+			   zoom:18
+		   })
+	      });  
+        }
+        init_map(121.475370,31.232844);    
+
+function populate_map (){
+    var anchor = $("#map").closest(".col-lg-6").width();
+    $("#map").width(anchor+"px");
+    //console.log(ancho);
+
+    var alto = $("#map").closest(".container-fluid").height();
+     $("#map").height(alto-50+"px");
+     //console.log(alto);
+}
+	  init_map();    	   
+	  crear_consulta ();
+	  
+map.on('popupopen', function() {  
+    $('.caso-popup').click(function(e){
+	var id_caso = $(this).attr("id_caso");
+	$.post( "/archivo/caso-json/", {
+	    id_caso: id_caso,
+	}, function( data ) {
+	  $('#modal-caso .modal-content').html(data);
+	  $('#modal-caso').modal('toggle');
+	});	      
+     });
+  });
+    
+$(".caso-popup").click(function(){
+    console.log("prueba popup");
+    var id_caso = $(this).attr("id_caso");
+   
+    $.post( "/archivo/cargar-marcadores/", {
+	id_caso: id_caso,
+    }, function( data ) {
+      
+      $('#myModal').modal('toggle');
+    });
+});
+
+function cargar_marcadores () {
+	$.get( "/archivo/cargar-marcadores/", function( data ) {
+		crear_marcadores (data);
+	});
+}
+		
+function casos_mostrados(cantidad){
+	$("#cantidad-casos").html(cantidad);	
+}	
+	
+	
+	</script>
+{% endblock %}

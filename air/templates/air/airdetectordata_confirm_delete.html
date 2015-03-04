@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<br>
+<br>
+<br>
+    <span class="fa fa-times"></span> Delete airdetectordata</h3>
+<div class="form-group">
+    <form action="{% url 'airdetectordata_delete' airdetectordata.id %}" method="post">
+        {% csrf_token %}
+        <p>Deleting airdetectordata <b>{{ airdetectordata.value }} ({{ airdetectordata.category }})</b>. Are you sure?</p>
+        <br>
+        <button type="submit" class="btn btn-primary" action="submit">Yes, I'm sure</button>
+        <button type="button" class="btn" onclick="location.href=&quot;{% url 'dashboard' %}&quot;;">Cancel</button>
+    </form>
+</div>
+{% endblock %}
