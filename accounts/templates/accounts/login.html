@@ -6,7 +6,7 @@
 <link href="{% static 'bootstrap/css/signin.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block rootcontainer %}
+{% block content %}
 <div class="container">
   <form class="form-signin" name="loginform" action="{% url 'login' %}" method="post">
     {% csrf_token %}
@@ -17,7 +17,7 @@
     <input type="text" id="username" name="username"  class="form-control" placeholder={% trans  '用户名'%}  required autofocus>
     <input type="password" id="password" name="password" class="form-control"  placeholder={% trans  '密码'%}  required>
     {% if login_failed %}
-      <p class="text-danger">{% trans  '对不起，该登录无效。请重试'%}</p>
+      <p class="text-danger">{% trans  '对不起，该登录无效，请重试'%}</p>
     {% endif %}
     <input type="submit" name="submit" value={% trans  '登录'%} class="btn btn-lg btn-primary btn-block"/>
     <br>

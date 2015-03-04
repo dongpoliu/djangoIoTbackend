@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load i18n %}  
 
 {% load crispy_forms_tags %}
 
@@ -7,8 +7,7 @@
 <br>
 <br>
 <h3>
-    <span class="glyphicon glyphicon-check"></span>
-    Sign Up Now for a FREE Account. Only takes a minute.
+    <span class="glyphicon glyphicon-check"></span>{% trans  '注册一个免费账户,只需要花一分钟时间'%}
 </h3>
 <br>
    {% crispy form %}

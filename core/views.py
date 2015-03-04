@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
 from braces.views import LoginRequiredMixin
-from devices.models import Device
+from air.models import AirDetectorData
 from .forms import ContactForm
 
 class HomePageView(TemplateView):
@@ -11,7 +11,7 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
-        context['device_count'] = Device.objects.count()
+        context['airdetectordata_count'] = AirDetectorData.objects.count()
 
         return context
 

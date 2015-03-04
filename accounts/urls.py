@@ -8,13 +8,12 @@ from django.contrib.auth.views import (
     password_reset_complete
 )
 from django.conf.urls import patterns, url
-from .views import login_view, UserSettingsView, SignUpView,LoginView
+from .views import login_view, UserSettingsView, SignUpView
 
 urlpatterns = patterns('',
     url(regex=r'^signup/',  view=SignUpView.as_view(), name='signup',),
     url(regex=r'^settings/',view=UserSettingsView.as_view(),name='usersettings', ),
     url(regex=r'^login/$',view=login_view,name='login', ),
-    #url(r'^login/$', LoginView.as_view(), name='login'),
     url(regex=r'^logout/$',view=logout,kwargs={'next_page': '/accounts/login/'},name='logout' ),
     url(regex=r'^password/change/$',view=password_change,name='password_change'),
     url(regex=r'^password/change/done/$',view=password_change_done,name='password_change_done'),

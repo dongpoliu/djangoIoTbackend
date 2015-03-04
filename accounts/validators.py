@@ -13,8 +13,8 @@ def validate_email_unique(value):
 def validate_username_unique(value):
     exists = User.objects.filter(username__iexact=value)
     invalid_usernames = [
-        'glucosetracker',
-        'glucose',
+        'airdetectordatatracker',
+        'airdetectordata',
         'diabetes',
         'admin',
         'help',

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
 <br>
 <br>
-   <h3><span class="glyphicon glyphicon-question-sign"></span> Help</h3>
+   <h3><span class="glyphicon glyphicon-question-sign"></span>{% trans '帮助' %}</h3>
     {% crispy form %}
 {% endblock %}

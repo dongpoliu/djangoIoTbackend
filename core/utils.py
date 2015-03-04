@@ -65,14 +65,14 @@ def to_mg(value):
         return value
 
 
-def glucose_by_unit_setting(user, value):
+def airdetectordata_by_unit_setting(user, value):
     """
-    Return the glucose value based on the unit setting.
+    Return the airdetectordata value based on the unit setting.
 
-    Glucose values are stored in mg/dL in the database. If a user's setting
+    airdetectordata values are stored in mg/dL in the database. If a user's setting
     is set to mmol/L, convert the value.
     """
-    if user.settings.glucose_unit.name=='mmol/L':
+    if user.settings.airdetectordata_unit.name=='mmol/L':
         return to_mmol(value)
     else:
         return value
